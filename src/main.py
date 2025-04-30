@@ -11,7 +11,7 @@ class SimpleHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
         if not heart_rate_map:
-            self.wfile.write('心拍数データはまだありません'.encode('utf-8'))
+            self.wfile.write('心拍数データがない'.encode('utf-8'))
         else:
             response = ""
             for device_id, bpm in heart_rate_map.items():
