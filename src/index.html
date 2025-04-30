@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>心拍数モニター</title>
+  <script>
+    async function fetchHeartRate() {
+      try {
+        const res = await fetch('/');
+        const text = await res.text();
+
+        const trimmed = text.trim(); // 空白を除去
+
+        if (trimmed === '' || trimmed.toLowerCase() === 'null' || trimmed.toLowerCase() === 'undefined') {
+          document.getElementById('rate').innerText = 'データがありません';
+        } else {
+          document.getElementById('rate').innerText = `心拍数: ${trimmed} bpm`;
+        }
+      } catch (error) {
+        document.getElementById('rate').innerText = '取得エラー';
+        console.error('取得中にエラーが発生しました:', error);
+      }
+    }
+
+    setInterval(fetchHeartRate, 1000);
+    window.onload = fetchHeartRate;
+  </script>
+</head>
+<body>
+  <h1 id="rate">読み込み中...</h1>
+</body>
+</html>
