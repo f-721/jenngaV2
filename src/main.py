@@ -5,42 +5,34 @@ heart_rate_map = {}
 
 class SimpleHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path == "/":
+        if self.path == "/" or self.path == "/index.html":
             try:
-                with open("index.html", "r", encoding="utf-8") as f:
-                    # content = f.read()
+                with open("index.html", "rb") as f:
                     self.send_response(200)
-                    self.send_header('Content-Type', 'text/html; charset=utf-8')  # Content-Typeを明示
-                    self.send_header('Access-Control-Allow-Origin', '*') 
+                    self.send_header('Content-Type', 'text/html; charset=utf-8')
+                    self.send_header('Access-Control-Allow-Origin', '*')
                     self.end_headers()
-
-                    if heart_rate_map:
-                        response = ""
-                        for device_id, bpm in heart_rate_map.items():
-                            response += f"{device_id} : {bpm}\n"
-                        self.wfile.write(response.encode('utf-8'))
-                        print("チンチンが"+response+"になった！")  # ←開発用ならOKだけど、本番コードには注意にゃ！
-                    else:
-                        self.wfile.write('心拍数データがない'.encode('utf-8'))
-
+                    self.wfile.write(f.read())  # ← ちゃんとHTMLを返すようににゃ！
             except FileNotFoundError:
                 self.send_response(404)
                 self.end_headers()
                 self.wfile.write('index.html が見つかりません'.encode('utf-8'))
-        else:
-            # 他のパスの場合は404エラーを返す
+        elif self.path == "/api":
+    # ここで心拍数を返す処理:
             self.send_response(404)
             self.end_headers()
-            self.wfile.write('リクエストされたリソースが見つかりません'.encode('utf-8'))
-
-            if not heart_rate_map:
-                self.wfile.write('心拍数データがない'.encode('utf-8'))
-            else:
+        else:
+            # 心拍数を返す用のAPIエンドポイントを別で用意にゃ！
+            self.send_response(200)
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            if heart_rate_map:
                 response = ""
                 for device_id, bpm in heart_rate_map.items():
                     response += f"{device_id} : {bpm}\n"
                 self.wfile.write(response.encode('utf-8'))
-                print("うおおおおおおおおおおおおおおお")
+            else:
+                self.wfile.write("心拍数データがない".encode('utf-8'))
 
     def do_POST(self):  
         content_length = int(self.headers['Content-Length'])

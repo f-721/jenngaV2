@@ -6,8 +6,9 @@
   <script>
     async function fetchHeartRate() {
       try {
-        const res = await fetch('http://192.168.101.43:8081/'); //家のIPアドレスとかに変えてください
-        // const res = await fetch('http://10.14.3.210:8081/');
+        // const res = await fetch('http://192.168.101.43:8081/'); //家のIPアドレスとかに変えてください
+        // const res = await fetch('http://10.14.3.210:8081/');　//大学
+        const res = await fetch('http://192.168.10.106:8081/api');
         const text = await res.text();
 
         const trimmed = text.trim(); // 空白を除去
