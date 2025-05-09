@@ -38,10 +38,10 @@ class SimpleHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write('無効なデータ形式です（例: device01:85）'.encode('utf-8'))
 
-def run(port=8080):
+def run(port=8081):
     server_address = ('', port)
     httpd = HTTPServer(server_address, SimpleHandler)
-    print(f'http://192.168.100.26:8080/index.html') #opt押しながらWi-FiでPCのIΠアドレス表示
+    print(f'http://192.168.101.76:8081/index.html') #opt押しながらWi-FiでPCのIPアドレス表示
     httpd.serve_forever()
 
 if __name__ == '__main__':
