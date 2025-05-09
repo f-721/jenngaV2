@@ -18,14 +18,11 @@ class SimpleHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write('index.html が見つかりません'.encode('utf-8'))
         elif self.path == "/api":
-    # ここで心拍数を返す処理:
-            self.send_response(404)
-            self.end_headers()
-        else:
-            # 心拍数を返す用のAPIエンドポイントを別で用意にゃ！
             self.send_response(200)
             self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Content-Type', 'text/plain; charset=utf-8')
             self.end_headers()
+            
             if heart_rate_map:
                 response = ""
                 for device_id, bpm in heart_rate_map.items():
